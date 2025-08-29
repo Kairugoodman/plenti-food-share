@@ -14,7 +14,154 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      food_items: {
+        Row: {
+          created_at: string
+          donor_id: string
+          expiry_date: string
+          id: string
+          item_name: string
+          quantity: number
+          status: Database["public"]["Enums"]["food_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          donor_id: string
+          expiry_date: string
+          id?: string
+          item_name: string
+          quantity?: number
+          status?: Database["public"]["Enums"]["food_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          donor_id?: string
+          expiry_date?: string
+          id?: string
+          item_name?: string
+          quantity?: number
+          status?: Database["public"]["Enums"]["food_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "food_items_donor_id_fkey"
+            columns: ["donor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          location: string | null
+          name: string
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location?: string | null
+          name: string
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location?: string | null
+          name?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      requests: {
+        Row: {
+          created_at: string
+          food_item_id: string
+          id: string
+          recipient_id: string
+          status: Database["public"]["Enums"]["request_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          food_item_id: string
+          id?: string
+          recipient_id: string
+          status?: Database["public"]["Enums"]["request_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          food_item_id?: string
+          id?: string
+          recipient_id?: string
+          status?: Database["public"]["Enums"]["request_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "requests_food_item_id_fkey"
+            columns: ["food_item_id"]
+            isOneToOne: false
+            referencedRelation: "food_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "requests_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          date: string
+          id: string
+          type: Database["public"]["Enums"]["transaction_type"]
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          date?: string
+          id?: string
+          type: Database["public"]["Enums"]["transaction_type"]
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          date?: string
+          id?: string
+          type?: Database["public"]["Enums"]["transaction_type"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +170,10 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      food_status: "available" | "matched" | "collected"
+      request_status: "pending" | "accepted" | "completed"
+      transaction_type: "donation" | "payment"
+      user_role: "donor" | "recipient"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +300,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      food_status: ["available", "matched", "collected"],
+      request_status: ["pending", "accepted", "completed"],
+      transaction_type: ["donation", "payment"],
+      user_role: ["donor", "recipient"],
+    },
   },
 } as const
