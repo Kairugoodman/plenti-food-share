@@ -2,10 +2,28 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Heart, Users, Leaf, MapPin, Clock, Apple, User } from 'lucide-react';
+import { Heart, Users, Leaf, MapPin, Clock, Apple, User, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Navigate } from 'react-router-dom';
 import heroImage from '@/assets/hero-image.jpg';
 
 const Index = () => {
+  const { user, signOut, loading } = useAuth();
+
+  // Show loading state while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // Redirect to auth if not logged in
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
@@ -17,8 +35,15 @@ const Index = () => {
               <h1 className="text-2xl font-bold text-primary">Plenti</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost">Sign In</Button>
-              <Button variant="hero">Get Started</Button>
+              <span className="text-sm text-muted-foreground">Welcome, {user.email}</span>
+              <Button 
+                variant="ghost" 
+                onClick={signOut}
+                className="text-primary hover:text-primary/80"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Sign Out
+              </Button>
             </div>
           </div>
         </div>
