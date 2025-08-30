@@ -6,6 +6,8 @@ import { Heart, Users, Leaf, MapPin, Clock, Apple, User, LogOut } from 'lucide-r
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import heroImage from '@/assets/hero-image.jpg';
+import PaymentModal from '@/components/PaymentModal';
+import TransactionHistory from '@/components/TransactionHistory';
 
 const Index = () => {
   const { user, signOut, loading } = useAuth();
@@ -62,16 +64,28 @@ const Index = () => {
             Connect surplus food from farmers and businesses with NGOs and communities. 
             Together, we can reduce waste and fight hunger.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="hero" className="text-lg px-8">
-              <Heart className="mr-2 h-5 w-5" />
-              I Have Food to Share
-            </Button>
-            <Button size="lg" variant="ghost" className="text-lg px-8 bg-white/10 hover:bg-white/20 text-white border-white/30">
-              <Users className="mr-2 h-5 w-5" />
-              I Need Food
-            </Button>
-          </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <PaymentModal 
+                  trigger={
+                    <Button size="lg" variant="hero" className="text-lg px-8">
+                      <Heart className="mr-2 h-5 w-5" />
+                      I Have Food to Share
+                    </Button>
+                  }
+                  paymentType="delivery_fee"
+                  suggestedAmount={50}
+                />
+                <PaymentModal 
+                  trigger={
+                    <Button size="lg" variant="ghost" className="text-lg px-8 bg-white/10 hover:bg-white/20 text-white border-white/30">
+                      <Users className="mr-2 h-5 w-5" />
+                      Send Donation
+                    </Button>
+                  }
+                  paymentType="donation"
+                  suggestedAmount={200}
+                />
+              </div>
         </div>
       </section>
 
@@ -139,9 +153,15 @@ const Index = () => {
                     Green Valley Farm
                   </div>
                 </div>
-                <Button className="w-full" variant="outline">
-                  Request Pickup
-                </Button>
+                <PaymentModal 
+                  trigger={
+                    <Button className="w-full" variant="outline">
+                      Request Pickup + Pay Fee (KES 20)
+                    </Button>
+                  }
+                  paymentType="delivery_fee"
+                  suggestedAmount={20}
+                />
               </CardContent>
             </Card>
 
@@ -177,9 +197,15 @@ const Index = () => {
                     City Cafe
                   </div>
                 </div>
-                <Button className="w-full">
-                  Reserve Now
-                </Button>
+                <PaymentModal 
+                  trigger={
+                    <Button className="w-full">
+                      Reserve Now + Donate (KES 50)
+                    </Button>
+                  }
+                  paymentType="donation"
+                  suggestedAmount={50}
+                />
               </CardContent>
             </Card>
 
@@ -215,17 +241,24 @@ const Index = () => {
                     Metro Supermarket
                   </div>
                 </div>
-                <Button className="w-full" variant="outline">
-                  Request Pickup
-                </Button>
+                <PaymentModal 
+                  trigger={
+                    <Button className="w-full" variant="outline">
+                      Request Pickup + Pay Fee (KES 30)
+                    </Button>
+                  }
+                  paymentType="delivery_fee"
+                  suggestedAmount={30}
+                />
               </CardContent>
             </Card>
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 space-y-4">
             <Button variant="outline" size="lg">
               View All Available Food
             </Button>
+            <TransactionHistory />
           </div>
         </div>
       </section>
