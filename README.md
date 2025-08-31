@@ -1,73 +1,167 @@
-# Welcome to your Lovable project
 
-## Project info
+````markdown
+# 🌍 Plenti – Food Rescue & Redistribution App
 
-**URL**: https://lovable.dev/projects/edfef08f-dc0a-4ccf-9e16-0883bd596a9d
+Plenti is a social impact platform that connects **farmers, vendors, and supermarkets** with **NGOs, food banks, and local communities** to redistribute surplus food before it spoils.  
+The goal: **reduce food waste, fight hunger, and track environmental impact**.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🚀 Features
+- 👥 **User Roles**: Donors & Recipients  
+- 🥕 **Post Surplus Food**: Donors list available items (name, quantity, expiry, location)  
+- 🤝 **AI-Powered Matching**: Suggests best recipients based on location & urgency  
+- 🔔 **Notifications**: Recipients see food available nearby  
+- 💳 **Payments/Donations**: Integrated with **IntaSend (sandbox)** for delivery fees or donations  
+- 📊 **Impact Dashboard**: Meals Rescued, Families Fed, and CO₂ Saved  
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/edfef08f-dc0a-4ccf-9e16-0883bd596a9d) and start prompting.
+## 🛠️ Tech Stack
+- **Frontend**: Vite + React + Shadcn + Tailwind + TypeScript  
+- **Backend**: Flask (Python)  
+- **Database**: Supabase (Postgres + Auth)  
+- **Payments**: IntaSend (sandbox)  
+- **AI Matching**: OpenAI API  
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## ⚙️ Setup
+1. Clone the repo  
+   ```bash
+   git clone https://github.com/your-username/plenti.git
+   cd plenti
+````
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+2. Install dependencies
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+   ```bash
+   npm install
+   ```
+3. Create `.env` and add:
 
-Follow these steps:
+   ```
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   VITE_INSTASEND_PUBLISHABLE_KEY=your_instasend_sandbox_key
+   ```
+4. Run locally
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+   ```bash
+   npm run dev
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+---
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 🌍 Live Demo
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+👉 [Try Plenti here](https://plenti.vercel.app)
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🙌 Acknowledgments
 
-**Use GitHub Codespaces**
+Built with 💚 using **Lovable AI**, **Supabase**, and **IntaSend**.
+Targets **SDG 2 (Zero Hunger), SDG 12 (Responsible Consumption), and SDG 13 (Climate Action)**.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+# 🛠️ Development Notes (Lovable AI Build Log)
 
-This project is built with:
+This section explains **how Plenti was built using Lovable AI** with Supabase + IntaSend integrations.
+It records the **prompts, database design, and backend setup** for transparency and learning.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## 💡 Initial Prompt
 
-Simply open [Lovable](https://lovable.dev/projects/edfef08f-dc0a-4ccf-9e16-0883bd596a9d) and click on Share -> Publish.
+> *“Build a web application called ‘Plenti – Food Rescue & Redistribution App’…”*
 
-## Can I connect a custom domain to my Lovable project?
+### Tech Stack Requested
 
-Yes, you can!
+* **Frontend**: HTML5, CSS, JS (later upgraded to Vite + React + Shadcn + Tailwind)
+* **Backend**: Python (Flask)
+* **Database**: MySQL → migrated to **Supabase (Postgres)**
+* **AI**: OpenAI API for food matching
+* **Payments**: IntaSend
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+---
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 📦 Database Schema (Supabase)
+
+* **Profiles (Users)**: `id, name, email, role (donor/recipient), location`
+* **Food\_Items**: `id, donor_id, item_name, quantity, expiry_date, status`
+* **Requests**: `id, recipient_id, food_item_id, status`
+* **Transactions**: `id, user_id, amount, type, date`
+
+✅ Includes RLS (Row Level Security)
+✅ Auth integrated with Supabase email/password
+✅ Triggers for timestamps & user profile creation
+
+---
+
+## 🔐 Authentication
+
+* Email/password login via Supabase Auth
+* Roles assigned at signup (`donor` or `recipient`)
+* Password reset flow
+
+---
+
+## 💳 Payment Integration
+
+* **IntaSend (sandbox mode)**
+* Delivery fees (KES 20–50)
+* Donations (KES 50–200)
+* Recorded in `Transactions` table
+* Supports M-Pesa STK Push
+
+---
+
+## 📊 Dashboard
+
+* Tracks **Meals Rescued, Families Fed, CO₂ Saved**
+* Updates after requests & payments
+
+---
+
+## 🧠 AI Matching
+
+* Based on **location proximity**
+* Food **expiry urgency**
+* **Quantity balance**
+
+---
+
+## 📜 Example Prompts Used
+
+* *“Create Supabase schema with Users, Food\_Items, Requests, Transactions.”*
+* *“Enable authentication with email/password and roles.”*
+* *“Integrate IntaSend sandbox payments for donations and fees.”*
+* *“Build dashboard showing Meals Rescued, Families Fed, CO₂ Saved.”*
+
+---
+
+## 🚀 Deployment
+
+* **Frontend**: Vercel
+* **Backend**: Railway
+* **Live link**: [https://plenti.vercel.app](https://plenti.vercel.app)
+
+---
+
+## 📌 Notes
+
+* Currently in **sandbox mode** for IntaSend
+* Live mode requires verified keys
+* Built via **AI prompting (Lovable)** + Supabase integration
+
+---
+
+## 🙌 Credits
+
+* Built by \[Your Team/Name]
+* Assisted by **Lovable AI**
+* Powered by **Supabase** & **IntaSend**
+
+
